@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Auto generated XML Component Description for model autosar_LaneGuidance
+Model version                : 2.0
+Simulink Coder version       : Simulink Coder 9.4 (R2020b) 29-Jul-2020
+XML source code generated on : Mon Oct 05 20:22:32 2020
+Model Checksum               : 459014785 4019853902 2435345655 3361303438
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00047.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_pkg</SHORT-NAME>
+            <AR-PACKAGES>
+                <AR-PACKAGE>
+                    <SHORT-NAME>LaneGuidance_swc</SHORT-NAME>
+                    <ELEMENTS>
+                        <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE UUID="6574ed24-7dad-53cc-e7ac-01f60699f406">
+                            <SHORT-NAME>LaneGuidance</SHORT-NAME>
+                            <PORTS>
+                                <R-PORT-PROTOTYPE UUID="a8adc3c3-bbb1-575e-fbc6-0fcf8164f622">
+                                    <SHORT-NAME>RequiredPort</SHORT-NAME>
+                                    <REQUIRED-COM-SPECS>
+                                        <QUEUED-RECEIVER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface/LeftLaneDistance</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                            <QUEUE-LENGTH>10</QUEUE-LENGTH>
+                                        </QUEUED-RECEIVER-COM-SPEC>
+                                        <QUEUED-RECEIVER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface/LeftTurnIndicator</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                            <QUEUE-LENGTH>10</QUEUE-LENGTH>
+                                        </QUEUED-RECEIVER-COM-SPEC>
+                                        <QUEUED-RECEIVER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface/RightLaneDistance</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                            <QUEUE-LENGTH>10</QUEUE-LENGTH>
+                                        </QUEUED-RECEIVER-COM-SPEC>
+                                        <QUEUED-RECEIVER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface/RightTurnIndicator</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                            <QUEUE-LENGTH>10</QUEUE-LENGTH>
+                                        </QUEUED-RECEIVER-COM-SPEC>
+                                        <QUEUED-RECEIVER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface/LeftCarInBlindSpot</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                            <QUEUE-LENGTH>10</QUEUE-LENGTH>
+                                        </QUEUED-RECEIVER-COM-SPEC>
+                                        <QUEUED-RECEIVER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface/RightCarInBlindSpot</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                            <QUEUE-LENGTH>10</QUEUE-LENGTH>
+                                        </QUEUED-RECEIVER-COM-SPEC>
+                                    </REQUIRED-COM-SPECS>
+                                    <REQUIRED-INTERFACE-TREF DEST="SERVICE-INTERFACE">/LaneGuidance_pkg/LaneGuidance_if/RequiredInterface</REQUIRED-INTERFACE-TREF>
+                                </R-PORT-PROTOTYPE>
+                                <P-PORT-PROTOTYPE UUID="46b5526d-9da8-5240-0a54-cf055c8fcf2b">
+                                    <SHORT-NAME>ProvidedPort</SHORT-NAME>
+                                    <PROVIDED-COM-SPECS>
+                                        <QUEUED-SENDER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/ProvidedInterface/LeftHazardIndicator</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                        </QUEUED-SENDER-COM-SPEC>
+                                        <QUEUED-SENDER-COM-SPEC>
+                                            <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_if/ProvidedInterface/RightHazardIndicator</DATA-ELEMENT-REF>
+                                            <HANDLE-OUT-OF-RANGE>NONE</HANDLE-OUT-OF-RANGE>
+                                            <USES-END-TO-END-PROTECTION>false</USES-END-TO-END-PROTECTION>
+                                        </QUEUED-SENDER-COM-SPEC>
+                                    </PROVIDED-COM-SPECS>
+                                    <PROVIDED-INTERFACE-TREF DEST="SERVICE-INTERFACE">/LaneGuidance_pkg/LaneGuidance_if/ProvidedInterface</PROVIDED-INTERFACE-TREF>
+                                </P-PORT-PROTOTYPE>
+                            </PORTS>
+                        </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                    <SHORT-NAME>LaneGuidance_if</SHORT-NAME>
+                    <ELEMENTS>
+                        <SERVICE-INTERFACE UUID="cfa09a29-0034-5748-5b19-6a068bc6dd4a">
+                            <SHORT-NAME>ProvidedInterface</SHORT-NAME>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>company</SHORT-NAME>
+                                    <SYMBOL>company</SYMBOL>
+                                </SYMBOL-PROPS>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>chassis</SHORT-NAME>
+                                    <SYMBOL>chassis</SYMBOL>
+                                </SYMBOL-PROPS>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>provided</SHORT-NAME>
+                                    <SYMBOL>provided</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <EVENTS>
+                                <VARIABLE-DATA-PROTOTYPE UUID="2118c474-65e9-5862-742c-b973522859a4">
+                                    <SHORT-NAME>LeftHazardIndicator</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                                <VARIABLE-DATA-PROTOTYPE UUID="fbb7072b-9e13-5274-3905-060948979929">
+                                    <SHORT-NAME>RightHazardIndicator</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                            </EVENTS>
+                        </SERVICE-INTERFACE>
+                        <SERVICE-INTERFACE UUID="397fe746-d755-5c3b-7f81-5287a18c658a">
+                            <SHORT-NAME>RequiredInterface</SHORT-NAME>
+                            <NAMESPACES>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>company</SHORT-NAME>
+                                    <SYMBOL>company</SYMBOL>
+                                </SYMBOL-PROPS>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>chassis</SHORT-NAME>
+                                    <SYMBOL>chassis</SYMBOL>
+                                </SYMBOL-PROPS>
+                                <SYMBOL-PROPS>
+                                    <SHORT-NAME>required</SHORT-NAME>
+                                    <SYMBOL>required</SYMBOL>
+                                </SYMBOL-PROPS>
+                            </NAMESPACES>
+                            <EVENTS>
+                                <VARIABLE-DATA-PROTOTYPE UUID="199ea008-543f-5a08-bd59-bb61fb59e721">
+                                    <SHORT-NAME>LeftLaneDistance</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                                <VARIABLE-DATA-PROTOTYPE UUID="6060d3bf-2ad9-529f-7b87-036684b038ae">
+                                    <SHORT-NAME>LeftTurnIndicator</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                                <VARIABLE-DATA-PROTOTYPE UUID="9e2fc114-ea94-5064-179a-a37684343c3f">
+                                    <SHORT-NAME>RightLaneDistance</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                                <VARIABLE-DATA-PROTOTYPE UUID="c59fdfd4-e1a1-5349-10d8-e58162eebeb2">
+                                    <SHORT-NAME>RightTurnIndicator</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                                <VARIABLE-DATA-PROTOTYPE UUID="eb146e69-0698-54fe-c053-a98533906921">
+                                    <SHORT-NAME>LeftCarInBlindSpot</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                                <VARIABLE-DATA-PROTOTYPE UUID="57854472-1214-59bc-ed8d-fba59125a353">
+                                    <SHORT-NAME>RightCarInBlindSpot</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                    <SW-DATA-DEF-PROPS>
+                                        <SW-DATA-DEF-PROPS-VARIANTS>
+                                            <SW-DATA-DEF-PROPS-CONDITIONAL>
+                                                <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                                                <SW-IMPL-POLICY>QUEUED</SW-IMPL-POLICY>
+                                            </SW-DATA-DEF-PROPS-CONDITIONAL>
+                                        </SW-DATA-DEF-PROPS-VARIANTS>
+                                    </SW-DATA-DEF-PROPS>
+                                    <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/Double</TYPE-TREF>
+                                </VARIABLE-DATA-PROTOTYPE>
+                            </EVENTS>
+                        </SERVICE-INTERFACE>
+                    </ELEMENTS>
+                </AR-PACKAGE>
+                <AR-PACKAGE>
+                    <SHORT-NAME>LaneGuidance_dt</SHORT-NAME>
+                    <ELEMENTS>
+                        <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="c1e99051-67c6-517f-1ee7-c3f96314c8a5">
+                            <SHORT-NAME>Double</SHORT-NAME>
+                            <CATEGORY>VALUE</CATEGORY>
+                            <TEMPLATE-ARGUMENTS>
+                                <CPP-TEMPLATE-ARGUMENT>
+                                    <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/LaneGuidance_pkg/LaneGuidance_dt/SwBaseTypes/double</TEMPLATE-TYPE-REF>
+                                </CPP-TEMPLATE-ARGUMENT>
+                            </TEMPLATE-ARGUMENTS>
+                        </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                    </ELEMENTS>
+                    <AR-PACKAGES>
+                        <AR-PACKAGE>
+                            <SHORT-NAME>SwBaseTypes</SHORT-NAME>
+                            <ELEMENTS>
+                                <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="4d49b4ff-2707-581c-c724-4a59ca4c221d">
+                                    <SHORT-NAME>double</SHORT-NAME>
+                                    <CATEGORY>VALUE</CATEGORY>
+                                </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+                            </ELEMENTS>
+                        </AR-PACKAGE>
+                    </AR-PACKAGES>
+                </AR-PACKAGE>
+            </AR-PACKAGES>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

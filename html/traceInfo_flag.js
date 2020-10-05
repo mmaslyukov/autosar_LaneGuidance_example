@@ -1,0 +1,57 @@
+function TraceInfoFlag() {
+    this.traceFlag = new Array();
+    this.traceFlag["autosar_LaneGuidance.cpp:116c47"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:120c42"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:123c55"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:123c63"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:124c53"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:128c42"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:135c42"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:174c47"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:178c42"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:181c55"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:181c63"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:182c55"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:186c42"]=1;
+    this.traceFlag["autosar_LaneGuidance.cpp:193c42"]=1;
+}
+top.TraceInfoFlag.instance = new TraceInfoFlag();
+function TraceInfoLineFlag() {
+    this.lineTraceFlag = new Array();
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:31"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:39"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:47"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:55"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:63"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:71"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:79"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:116"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:120"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:123"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:124"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:128"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:135"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:144"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:174"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:178"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:181"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:182"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:186"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:193"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.cpp:202"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:30"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:31"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:32"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:33"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:34"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:35"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:40"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:41"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:42"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:43"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:44"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:45"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:50"]=1;
+    this.lineTraceFlag["autosar_LaneGuidance.h:51"]=1;
+}
+top.TraceInfoLineFlag.instance = new TraceInfoLineFlag();

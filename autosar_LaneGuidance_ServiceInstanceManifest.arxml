@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Auto generated XML Component Description for model autosar_LaneGuidance
+Model version                : 2.0
+Simulink Coder version       : Simulink Coder 9.4 (R2020b) 29-Jul-2020
+XML source code generated on : Mon Oct 05 20:22:32 2020
+Model Checksum               : 459014785 4019853902 2435345655 3361303438
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00047.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_Deployments</SHORT-NAME>
+            <ELEMENTS>
+                <USER-DEFINED-SERVICE-INTERFACE-DEPLOYMENT UUID="0a493842-3da6-5717-078f-af36920453dc">
+                    <SHORT-NAME>UserDefinedDeployment_RP1</SHORT-NAME>
+                    <ADMIN-DATA>
+                        <SDGS>
+                            <SDG GID="1"/>
+                        </SDGS>
+                    </ADMIN-DATA>
+                </USER-DEFINED-SERVICE-INTERFACE-DEPLOYMENT>
+                <USER-DEFINED-SERVICE-INTERFACE-DEPLOYMENT UUID="8ea231cb-c178-5fe8-0880-aba5fa364033">
+                    <SHORT-NAME>UserDefinedDeployment_PP1</SHORT-NAME>
+                    <ADMIN-DATA>
+                        <SDGS>
+                            <SDG GID="2"/>
+                        </SDGS>
+                    </ADMIN-DATA>
+                </USER-DEFINED-SERVICE-INTERFACE-DEPLOYMENT>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_ServiceInstanceToPortMappings</SHORT-NAME>
+            <ELEMENTS>
+                <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING UUID="e44fd048-7a36-5cf0-dc95-fe20091573ab">
+                    <SHORT-NAME>Mapping_RP1</SHORT-NAME>
+                    <PORT-PROTOTYPE-IREF>
+                        <CONTEXT-COMPONENT-PROTOTYPE-REF DEST="SW-COMPONENT-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_swc/LaneGuidance</CONTEXT-COMPONENT-PROTOTYPE-REF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_swc/LaneGuidance/RequiredPort</TARGET-PORT-PROTOTYPE-REF>
+                    </PORT-PROTOTYPE-IREF>
+                    <PROCESS-REF DEST="PROCESS">/LaneGuidance_Processes/DefaultInstance</PROCESS-REF>
+                    <SERVICE-INSTANCE-REF DEST="REQUIRED-USER-DEFINED-SERVICE-INSTANCE">/LaneGuidance_ServiceInstances/UserDefinedSI_RP1</SERVICE-INSTANCE-REF>
+                </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+                <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING UUID="ef97cde7-6593-5acc-cdaf-254216ef1d56">
+                    <SHORT-NAME>Mapping_PP1</SHORT-NAME>
+                    <PORT-PROTOTYPE-IREF>
+                        <CONTEXT-COMPONENT-PROTOTYPE-REF DEST="SW-COMPONENT-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_swc/LaneGuidance</CONTEXT-COMPONENT-PROTOTYPE-REF>
+                        <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/LaneGuidance_pkg/LaneGuidance_swc/LaneGuidance/ProvidedPort</TARGET-PORT-PROTOTYPE-REF>
+                    </PORT-PROTOTYPE-IREF>
+                    <PROCESS-REF DEST="PROCESS">/LaneGuidance_Processes/DefaultInstance</PROCESS-REF>
+                    <SERVICE-INSTANCE-REF DEST="PROVIDED-USER-DEFINED-SERVICE-INSTANCE">/LaneGuidance_ServiceInstances/UserDefinedSI_PP1</SERVICE-INSTANCE-REF>
+                </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_ServiceInstances</SHORT-NAME>
+            <ELEMENTS>
+                <REQUIRED-USER-DEFINED-SERVICE-INSTANCE UUID="9b854bec-bbc4-51dc-6fc5-7b4f7f0ac6a9">
+                    <SHORT-NAME>UserDefinedSI_RP1</SHORT-NAME>
+                    <SERVICE-INTERFACE-REF DEST="USER-DEFINED-SERVICE-INTERFACE-DEPLOYMENT">/LaneGuidance_Deployments/UserDefinedDeployment_RP1</SERVICE-INTERFACE-REF>
+                </REQUIRED-USER-DEFINED-SERVICE-INSTANCE>
+                <PROVIDED-USER-DEFINED-SERVICE-INSTANCE UUID="24c6ce35-6242-5421-9ef7-a123ca88a05e">
+                    <SHORT-NAME>UserDefinedSI_PP1</SHORT-NAME>
+                    <SERVICE-INTERFACE-REF DEST="USER-DEFINED-SERVICE-INTERFACE-DEPLOYMENT">/LaneGuidance_Deployments/UserDefinedDeployment_PP1</SERVICE-INTERFACE-REF>
+                </PROVIDED-USER-DEFINED-SERVICE-INSTANCE>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

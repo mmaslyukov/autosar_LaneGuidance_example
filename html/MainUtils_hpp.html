@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="./js/coder_app.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="./rtwreport_utils.js"></script>
+<script type="text/javascript" src="./rtwannotate.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/coder_app.css"/>
+</head>
+<body onload="srcFileOnload();">
+<pre id="code">
+<table class="code" id="codeTbl">
+<tr name="1" id="1">
+<td><a id="l1" class='ln'>1</a></td><td><span class="ct">/* Copyright 2018-2020 The MathWorks, Inc. */</span></td></tr>
+<tr name="2" id="2">
+<td><a id="l2" class='ln'>2</a></td><td><span class="pp">#ifndef</span> <a id="2c9" class="tk">_MAIN_UTILS_HPP_</a></td></tr>
+<tr name="3" id="3">
+<td><a id="l3" class='ln'>3</a></td><td><span class="pp">#define</span> <a id="3c9" class="tk">_MAIN_UTILS_HPP_</a></td></tr>
+<tr name="4" id="4">
+<td><a id="l4" class='ln'>4</a></td><td></td></tr>
+<tr name="5" id="5">
+<td><a id="l5" class='ln'>5</a></td><td><span class="pp">#include &lt;thread&gt;</span></td></tr>
+<tr name="6" id="6">
+<td><a id="l6" class='ln'>6</a></td><td><span class="pp">#include &lt;semaphore.h&gt;</span></td></tr>
+<tr name="7" id="7">
+<td><a id="l7" class='ln'>7</a></td><td><span class="pp">#include &lt;signal.h&gt;</span></td></tr>
+<tr name="8" id="8">
+<td><a id="l8" class='ln'>8</a></td><td><span class="pp">#include &lt;atomic&gt;</span></td></tr>
+<tr name="9" id="9">
+<td><a id="l9" class='ln'>9</a></td><td><span class="pp">#include &lt;cerrno&gt;</span></td></tr>
+<tr name="10" id="10">
+<td><a id="l10" class='ln'>10</a></td><td><span class="pp">#include &lt;cstring&gt;</span></td></tr>
+<tr name="11" id="11">
+<td><a id="l11" class='ln'>11</a></td><td><span class="pp">#include &lt;ara/log/logger.h&gt;</span></td></tr>
+<tr name="12" id="12">
+<td><a id="l12" class='ln'>12</a></td><td><span class="pp">#include "ara/log/logstream.h"</span></td></tr>
+<tr name="13" id="13">
+<td><a id="l13" class='ln'>13</a></td><td></td></tr>
+<tr name="14" id="14">
+<td><a id="l14" class='ln'>14</a></td><td><span class="pp">#ifdef</span> <a id="14c8" class="tk">XCP_SUPPORT_ADAPTIVE_AUTOSAR</a></td></tr>
+<tr name="15" id="15">
+<td><a id="l15" class='ln'>15</a></td><td><span class="pp">#ifdef</span> <a id="15c8" class="tk">__cplusplus</a></td></tr>
+<tr name="16" id="16">
+<td><a id="l16" class='ln'>16</a></td><td><span class="kw">extern</span> "C" <span class="br">{</span></td></tr>
+<tr name="17" id="17">
+<td><a id="l17" class='ln'>17</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="18" id="18">
+<td><a id="l18" class='ln'>18</a></td><td><span class="pp">#include "xcp_slave.h"</span></td></tr>
+<tr name="19" id="19">
+<td><a id="l19" class='ln'>19</a></td><td><span class="pp">#ifdef</span> <a id="19c8" class="tk">__cplusplus</a></td></tr>
+<tr name="20" id="20">
+<td><a id="l20" class='ln'>20</a></td><td><span class="br">}</span></td></tr>
+<tr name="21" id="21">
+<td><a id="l21" class='ln'>21</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="22" id="22">
+<td><a id="l22" class='ln'>22</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="23" id="23">
+<td><a id="l23" class='ln'>23</a></td><td></td></tr>
+<tr name="24" id="24">
+<td><a id="l24" class='ln'>24</a></td><td><span class="ct">/* Helper for calling a pointer to member function. */</span></td></tr>
+<tr name="25" id="25">
+<td><a id="l25" class='ln'>25</a></td><td><span class="pp">#define</span> <a id="25c9" class="tk">MEMBER_FN_CALL</a>(<a id="25c24" class="tk">obj</a>, <a id="25c29" class="tk">member</a>) ((<a id="25c39" class="tk">obj</a>)<a id="25c43" class="tk">.*</a>(<a id="25c46" class="tk">member</a>))</td></tr>
+<tr name="26" id="26">
+<td><a id="l26" class='ln'>26</a></td><td></td></tr>
+<tr name="27" id="27">
+<td><a id="l27" class='ln'>27</a></td><td><span class="ct">/* StepFunction handles executing a given step function from a</span></td></tr>
+<tr name="28" id="28">
+<td><a id="l28" class='ln'>28</a></td><td><span class="ct"> * different thread.  This class manages creating the thread and </span></td></tr>
+<tr name="29" id="29">
+<td><a id="l29" class='ln'>29</a></td><td><span class="ct"> * communicating with it.</span></td></tr>
+<tr name="30" id="30">
+<td><a id="l30" class='ln'>30</a></td><td><span class="ct"> * </span></td></tr>
+<tr name="31" id="31">
+<td><a id="l31" class='ln'>31</a></td><td><span class="ct"> * The class interface allows step()'ing the step function once at a time</span></td></tr>
+<tr name="32" id="32">
+<td><a id="l32" class='ln'>32</a></td><td><span class="ct"> * and stopping the thread.</span></td></tr>
+<tr name="33" id="33">
+<td><a id="l33" class='ln'>33</a></td><td><span class="ct"> */</span></td></tr>
+<tr name="34" id="34">
+<td><a id="l34" class='ln'>34</a></td><td><span class="kw">template</span> <a id="34c10" class="tk">&lt;</a><span class="kw">typename</span> <a id="34c20" class="tk">Model</a>, <span class="kw">typename</span> <a id="34c36" class="tk">StepFun</a>, <span class="kw">int</span> <a id="34c49" class="tk">eventID</a> = 0<a id="34c60" class="tk">&gt;</a></td></tr>
+<tr name="35" id="35">
+<td><a id="l35" class='ln'>35</a></td><td><span class="kw">class</span> <a id="35c7" class="tk">StepFunction</a></td></tr>
+<tr name="36" id="36">
+<td><a id="l36" class='ln'>36</a></td><td><span class="br">{</span></td></tr>
+<tr name="37" id="37">
+<td><a id="l37" class='ln'>37</a></td><td>    <a id="37c5" class="tk">Model</a> <a id="37c11" class="tk">*</a> <span class="kw">const</span> <a id="37c19" class="tk">model</a>;</td></tr>
+<tr name="38" id="38">
+<td><a id="l38" class='ln'>38</a></td><td>    <a id="38c5" class="tk">StepFun</a> <a id="38c13" class="tk">func</a>;</td></tr>
+<tr name="39" id="39">
+<td><a id="l39" class='ln'>39</a></td><td>    <a id="39c5" class="tk">std</a>::<a id="39c10" class="tk">shared_ptr</a><a id="39c20" class="tk">&lt;</a><a id="39c21" class="tk">sem_t</a><a id="39c26" class="tk">&gt;</a> <a id="39c28" class="tk">sem</a>;</td></tr>
+<tr name="40" id="40">
+<td><a id="l40" class='ln'>40</a></td><td>    <a id="40c5" class="tk">std</a>::<a id="40c10" class="tk">thread</a> <a id="40c17" class="tk">thread</a>;</td></tr>
+<tr name="41" id="41">
+<td><a id="l41" class='ln'>41</a></td><td>    <a id="41c5" class="tk">std</a>::<a id="41c10" class="tk">atomic_bool</a> <a id="41c22" class="tk">halt</a>;</td></tr>
+<tr name="42" id="42">
+<td><a id="l42" class='ln'>42</a></td><td>    <a id="42c5" class="tk">ara</a>::<a id="42c10" class="tk">log</a>::<a id="42c15" class="tk">Logger</a> <a id="42c22" class="tk">&amp;</a> <a id="42c24" class="tk">log</a>;</td></tr>
+<tr name="43" id="43">
+<td><a id="l43" class='ln'>43</a></td><td></td></tr>
+<tr name="44" id="44">
+<td><a id="l44" class='ln'>44</a></td><td>    <a id="44c5" class="tk">StepFunction</a>(<a id="44c18" class="tk">StepFunction</a> <span class="kw">const</span> <a id="44c37" class="tk">&amp;</a>) = <span class="kw">delete</span>;</td></tr>
+<tr name="45" id="45">
+<td><a id="l45" class='ln'>45</a></td><td>    <a id="45c5" class="tk">StepFunction</a> <a id="45c18" class="tk">&amp;</a> <span class="kw">operator</span>=(<a id="45c30" class="tk">StepFunction</a> <span class="kw">const</span> <a id="45c49" class="tk">&amp;</a>) = <span class="kw">delete</span>;</td></tr>
+<tr name="46" id="46">
+<td><a id="l46" class='ln'>46</a></td><td></td></tr>
+<tr name="47" id="47">
+<td><a id="l47" class='ln'>47</a></td><td>    <span class="kw">void</span> <a id="47c10" class="tk">step_wrapper</a>()</td></tr>
+<tr name="48" id="48">
+<td><a id="l48" class='ln'>48</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="49" id="49">
+<td><a id="l49" class='ln'>49</a></td><td>        <span class="kw">while</span>(true) <span class="br">{</span></td></tr>
+<tr name="50" id="50">
+<td><a id="l50" class='ln'>50</a></td><td>            <span class="kw">int</span> <a id="50c17" class="tk">err</a> = <a id="50c23" class="tk">sem_wait</a>(<a id="50c32" class="tk">sem</a>.<a id="50c36" class="tk">get</a>());</td></tr>
+<tr name="51" id="51">
+<td><a id="l51" class='ln'>51</a></td><td>            <span class="kw">if</span> (<a id="51c17" class="tk">halt</a>) <span class="br">{</span></td></tr>
+<tr name="52" id="52">
+<td><a id="l52" class='ln'>52</a></td><td>                <a id="52c17" class="tk">log</a>.<a id="52c21" class="tk">LogInfo</a>() <a id="52c31" class="tk">&lt;&lt;</a> "Thread " <a id="52c44" class="tk">&lt;&lt;</a> <a id="52c47" class="tk">pthread_self</a>() <a id="52c62" class="tk">&lt;&lt;</a> "exiting\n";</td></tr>
+<tr name="53" id="53">
+<td><a id="l53" class='ln'>53</a></td><td>                <span class="kw">return</span>;</td></tr>
+<tr name="54" id="54">
+<td><a id="l54" class='ln'>54</a></td><td>            <span class="br">}</span></td></tr>
+<tr name="55" id="55">
+<td><a id="l55" class='ln'>55</a></td><td></td></tr>
+<tr name="56" id="56">
+<td><a id="l56" class='ln'>56</a></td><td>            <span class="kw">if</span> (<a id="56c17" class="tk">err</a> <a id="56c21" class="tk">!=</a> 0) <span class="br">{</span></td></tr>
+<tr name="57" id="57">
+<td><a id="l57" class='ln'>57</a></td><td>                <a id="57c17" class="tk">log</a>.<a id="57c21" class="tk">LogError</a>() <a id="57c32" class="tk">&lt;&lt;</a> "sem_wait failed: " <a id="57c55" class="tk">&lt;&lt;</a> <a id="57c58" class="tk">std</a>::<a id="57c63" class="tk">strerror</a>(<a id="57c72" class="tk">errno</a>);</td></tr>
+<tr name="58" id="58">
+<td><a id="l58" class='ln'>58</a></td><td>                <span class="kw">continue</span>;</td></tr>
+<tr name="59" id="59">
+<td><a id="l59" class='ln'>59</a></td><td>            <span class="br">}</span></td></tr>
+<tr name="60" id="60">
+<td><a id="l60" class='ln'>60</a></td><td></td></tr>
+<tr name="61" id="61">
+<td><a id="l61" class='ln'>61</a></td><td>            <span class="kw">int</span> <a id="61c17" class="tk">sval</a>;</td></tr>
+<tr name="62" id="62">
+<td><a id="l62" class='ln'>62</a></td><td>            <span class="kw">if</span> (0 <a id="62c19" class="tk">==</a> <a id="62c22" class="tk">sem_getvalue</a>(<a id="62c35" class="tk">sem</a>.<a id="62c39" class="tk">get</a>(), <a id="62c46" class="tk">&amp;</a><a id="62c47" class="tk">sval</a>) <a id="62c53" class="tk">&amp;&amp;</a> 1 <a id="62c58" class="tk">&lt;</a> <a id="62c60" class="tk">sval</a>) <span class="br">{</span></td></tr>
+<tr name="63" id="63">
+<td><a id="l63" class='ln'>63</a></td><td>                <a id="63c17" class="tk">log</a>.<a id="63c21" class="tk">LogError</a>() <a id="63c32" class="tk">&lt;&lt;</a> "Thread " <a id="63c45" class="tk">&lt;&lt;</a> <a id="63c48" class="tk">pthread_self</a>() <a id="63c63" class="tk">&lt;&lt;</a> " is behind schedule by " <a id="63c92" class="tk">&lt;&lt;</a> <a id="63c95" class="tk">sval</a> <a id="63c100" class="tk">&lt;&lt;</a> "\n";</td></tr>
+<tr name="64" id="64">
+<td><a id="l64" class='ln'>64</a></td><td>            <span class="br">}</span></td></tr>
+<tr name="65" id="65">
+<td><a id="l65" class='ln'>65</a></td><td></td></tr>
+<tr name="66" id="66">
+<td><a id="l66" class='ln'>66</a></td><td>            <span class="kw">try</span> <span class="br">{</span></td></tr>
+<tr name="67" id="67">
+<td><a id="l67" class='ln'>67</a></td><td>                <a id="67c17" class="tk">MEMBER_FN_CALL</a>(<a id="67c32" class="tk">*</a><a id="67c33" class="tk">model</a>, <a id="67c40" class="tk">func</a>)();</td></tr>
+<tr name="68" id="68">
+<td><a id="l68" class='ln'>68</a></td><td><span class="pp">#ifdef</span> <a id="68c8" class="tk">XCP_SUPPORT_ADAPTIVE_AUTOSAR</a></td></tr>
+<tr name="69" id="69">
+<td><a id="l69" class='ln'>69</a></td><td>                <a id="69c17" class="tk">xcpSlaveEvent</a>(<a id="69c31" class="tk">eventID</a>);</td></tr>
+<tr name="70" id="70">
+<td><a id="l70" class='ln'>70</a></td><td><span class="pp">#endif</span></td></tr>
+<tr name="71" id="71">
+<td><a id="l71" class='ln'>71</a></td><td>            <span class="br">}</span> <span class="kw">catch</span> (<a id="71c22" class="tk">std</a>::<a id="71c27" class="tk">exception</a> <span class="kw">const</span> <a id="71c43" class="tk">&amp;</a> <a id="71c45" class="tk">e</a>) <span class="br">{</span></td></tr>
+<tr name="72" id="72">
+<td><a id="l72" class='ln'>72</a></td><td>                <a id="72c17" class="tk">log</a>.<a id="72c21" class="tk">LogError</a>() <a id="72c32" class="tk">&lt;&lt;</a> "Error executing step: " <a id="72c60" class="tk">&lt;&lt;</a> <a id="72c63" class="tk">e</a>.<a id="72c65" class="tk">what</a>();</td></tr>
+<tr name="73" id="73">
+<td><a id="l73" class='ln'>73</a></td><td>            <span class="br">}</span></td></tr>
+<tr name="74" id="74">
+<td><a id="l74" class='ln'>74</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="75" id="75">
+<td><a id="l75" class='ln'>75</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="76" id="76">
+<td><a id="l76" class='ln'>76</a></td><td></td></tr>
+<tr name="77" id="77">
+<td><a id="l77" class='ln'>77</a></td><td><span class="kw">public</span><a id="77c7" class="tk">:</a></td></tr>
+<tr name="78" id="78">
+<td><a id="l78" class='ln'>78</a></td><td>    <a id="78c5" class="tk">StepFunction</a>(<a id="78c18" class="tk">Model</a> <a id="78c24" class="tk">*</a> <a id="78c26" class="tk">model</a>, <a id="78c33" class="tk">StepFun</a> <a id="78c41" class="tk">func</a>, <a id="78c47" class="tk">ara</a>::<a id="78c52" class="tk">log</a>::<a id="78c57" class="tk">Logger</a> <a id="78c64" class="tk">&amp;</a> <a id="78c66" class="tk">log</a>)<a id="78c70" class="tk">:</a></td></tr>
+<tr name="79" id="79">
+<td><a id="l79" class='ln'>79</a></td><td>        <a id="79c9" class="tk">model</a>(<a id="79c15" class="tk">model</a>),</td></tr>
+<tr name="80" id="80">
+<td><a id="l80" class='ln'>80</a></td><td>        <a id="80c9" class="tk">func</a>(<a id="80c14" class="tk">func</a>),</td></tr>
+<tr name="81" id="81">
+<td><a id="l81" class='ln'>81</a></td><td>        <a id="81c9" class="tk">sem</a>(<a id="81c13" class="tk">std</a>::<a id="81c18" class="tk">make_shared</a><a id="81c29" class="tk">&lt;</a><a id="81c30" class="tk">sem_t</a><a id="81c35" class="tk">&gt;</a>()),</td></tr>
+<tr name="82" id="82">
+<td><a id="l82" class='ln'>82</a></td><td>        <a id="82c9" class="tk">halt</a>(false),</td></tr>
+<tr name="83" id="83">
+<td><a id="l83" class='ln'>83</a></td><td>        <a id="83c9" class="tk">log</a>(<a id="83c13" class="tk">log</a>)</td></tr>
+<tr name="84" id="84">
+<td><a id="l84" class='ln'>84</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="85" id="85">
+<td><a id="l85" class='ln'>85</a></td><td>        <span class="kw">int</span> <a id="85c13" class="tk">err</a> = <a id="85c19" class="tk">sem_init</a>(<a id="85c28" class="tk">sem</a>.<a id="85c32" class="tk">get</a>(), 0, 0);</td></tr>
+<tr name="86" id="86">
+<td><a id="l86" class='ln'>86</a></td><td>        <span class="kw">if</span> (<a id="86c13" class="tk">err</a> <a id="86c17" class="tk">!=</a> 0) <span class="br">{</span></td></tr>
+<tr name="87" id="87">
+<td><a id="l87" class='ln'>87</a></td><td>            <a id="87c13" class="tk">log</a>.<a id="87c17" class="tk">LogError</a>() <a id="87c28" class="tk">&lt;&lt;</a> "Unable to initialize semaphore: " <a id="87c66" class="tk">&lt;&lt;</a> <a id="87c69" class="tk">std</a>::<a id="87c74" class="tk">strerror</a>(<a id="87c83" class="tk">errno</a>);</td></tr>
+<tr name="88" id="88">
+<td><a id="l88" class='ln'>88</a></td><td>            <a id="88c13" class="tk">std</a>::<a id="88c18" class="tk">exit</a>(<a id="88c23" class="tk">EXIT_FAILURE</a>);</td></tr>
+<tr name="89" id="89">
+<td><a id="l89" class='ln'>89</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="90" id="90">
+<td><a id="l90" class='ln'>90</a></td><td></td></tr>
+<tr name="91" id="91">
+<td><a id="l91" class='ln'>91</a></td><td>        <a id="91c9" class="tk">thread</a> = <a id="91c18" class="tk">std</a>::<a id="91c23" class="tk">thread</a>(<a id="91c30" class="tk">&amp;</a><a id="91c31" class="tk">StepFunction</a>::<a id="91c45" class="tk">step_wrapper</a>, <span class="kw">this</span>);</td></tr>
+<tr name="92" id="92">
+<td><a id="l92" class='ln'>92</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="93" id="93">
+<td><a id="l93" class='ln'>93</a></td><td></td></tr>
+<tr name="94" id="94">
+<td><a id="l94" class='ln'>94</a></td><td>    <a id="94c5" class="tk">~</a><a id="94c6" class="tk">StepFunction</a>()</td></tr>
+<tr name="95" id="95">
+<td><a id="l95" class='ln'>95</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="96" id="96">
+<td><a id="l96" class='ln'>96</a></td><td>        <span class="kw">if</span>(<a id="96c12" class="tk">thread</a>.<a id="96c19" class="tk">joinable</a>())</td></tr>
+<tr name="97" id="97">
+<td><a id="l97" class='ln'>97</a></td><td>        <span class="br">{</span></td></tr>
+<tr name="98" id="98">
+<td><a id="l98" class='ln'>98</a></td><td>            <a id="98c13" class="tk">thread</a>.<a id="98c20" class="tk">join</a>();</td></tr>
+<tr name="99" id="99">
+<td><a id="l99" class='ln'>99</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="100" id="100">
+<td><a id="l100" class='ln'>100</a></td><td>        <span class="kw">if</span> (<a id="100c13" class="tk">sem_destroy</a>(<a id="100c25" class="tk">sem</a>.<a id="100c29" class="tk">get</a>()) <a id="100c36" class="tk">==</a> <a id="100c39" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="101" id="101">
+<td><a id="l101" class='ln'>101</a></td><td>            <a id="101c13" class="tk">log</a>.<a id="101c17" class="tk">LogError</a>() <a id="101c28" class="tk">&lt;&lt;</a> "Destroying semaphore failed: " <a id="101c63" class="tk">&lt;&lt;</a> <a id="101c66" class="tk">std</a>::<a id="101c71" class="tk">strerror</a>(<a id="101c80" class="tk">errno</a>);</td></tr>
+<tr name="102" id="102">
+<td><a id="l102" class='ln'>102</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="103" id="103">
+<td><a id="l103" class='ln'>103</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="104" id="104">
+<td><a id="l104" class='ln'>104</a></td><td></td></tr>
+<tr name="105" id="105">
+<td><a id="l105" class='ln'>105</a></td><td>    <span class="kw">void</span> <a id="105c10" class="tk">step</a>()</td></tr>
+<tr name="106" id="106">
+<td><a id="l106" class='ln'>106</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="107" id="107">
+<td><a id="l107" class='ln'>107</a></td><td>        <span class="kw">if</span> (<a id="107c13" class="tk">sem_post</a>(<a id="107c22" class="tk">sem</a>.<a id="107c26" class="tk">get</a>()) <a id="107c33" class="tk">==</a> <a id="107c36" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="108" id="108">
+<td><a id="l108" class='ln'>108</a></td><td>            <a id="108c13" class="tk">log</a>.<a id="108c17" class="tk">LogError</a>() <a id="108c28" class="tk">&lt;&lt;</a> "Semaphore post failed: " <a id="108c57" class="tk">&lt;&lt;</a> <a id="108c60" class="tk">std</a>::<a id="108c65" class="tk">strerror</a>(<a id="108c74" class="tk">errno</a>);</td></tr>
+<tr name="109" id="109">
+<td><a id="l109" class='ln'>109</a></td><td>            <span class="kw">return</span>;</td></tr>
+<tr name="110" id="110">
+<td><a id="l110" class='ln'>110</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="111" id="111">
+<td><a id="l111" class='ln'>111</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="112" id="112">
+<td><a id="l112" class='ln'>112</a></td><td></td></tr>
+<tr name="113" id="113">
+<td><a id="l113" class='ln'>113</a></td><td>    <span class="kw">void</span> <a id="113c10" class="tk">stop</a>()</td></tr>
+<tr name="114" id="114">
+<td><a id="l114" class='ln'>114</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="115" id="115">
+<td><a id="l115" class='ln'>115</a></td><td>        <a id="115c9" class="tk">halt</a> = true;</td></tr>
+<tr name="116" id="116">
+<td><a id="l116" class='ln'>116</a></td><td>        <a id="116c9" class="tk">step</a>();</td></tr>
+<tr name="117" id="117">
+<td><a id="l117" class='ln'>117</a></td><td>        <span class="kw">if</span>(<a id="117c12" class="tk">thread</a>.<a id="117c19" class="tk">joinable</a>())</td></tr>
+<tr name="118" id="118">
+<td><a id="l118" class='ln'>118</a></td><td>        <span class="br">{</span></td></tr>
+<tr name="119" id="119">
+<td><a id="l119" class='ln'>119</a></td><td>            <a id="119c13" class="tk">thread</a>.<a id="119c20" class="tk">join</a>();</td></tr>
+<tr name="120" id="120">
+<td><a id="l120" class='ln'>120</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="121" id="121">
+<td><a id="l121" class='ln'>121</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="122" id="122">
+<td><a id="l122" class='ln'>122</a></td><td><span class="br">}</span>;</td></tr>
+<tr name="123" id="123">
+<td><a id="l123" class='ln'>123</a></td><td></td></tr>
+<tr name="124" id="124">
+<td><a id="l124" class='ln'>124</a></td><td></td></tr>
+<tr name="125" id="125">
+<td><a id="l125" class='ln'>125</a></td><td><span class="kw">class</span> <a id="125c7" class="tk">Timer</a></td></tr>
+<tr name="126" id="126">
+<td><a id="l126" class='ln'>126</a></td><td><span class="br">{</span></td></tr>
+<tr name="127" id="127">
+<td><a id="l127" class='ln'>127</a></td><td>    <a id="127c5" class="tk">timer_t</a> <a id="127c13" class="tk">timerid</a>;</td></tr>
+<tr name="128" id="128">
+<td><a id="l128" class='ln'>128</a></td><td>    <span class="kw">double</span> <a id="128c12" class="tk">base_rate</a>;</td></tr>
+<tr name="129" id="129">
+<td><a id="l129" class='ln'>129</a></td><td>    <a id="129c5" class="tk">ara</a>::<a id="129c10" class="tk">log</a>::<a id="129c15" class="tk">Logger</a> <a id="129c22" class="tk">&amp;</a> <a id="129c24" class="tk">log</a>;</td></tr>
+<tr name="130" id="130">
+<td><a id="l130" class='ln'>130</a></td><td></td></tr>
+<tr name="131" id="131">
+<td><a id="l131" class='ln'>131</a></td><td>    <span class="kw">public</span><a id="131c11" class="tk">:</a></td></tr>
+<tr name="132" id="132">
+<td><a id="l132" class='ln'>132</a></td><td></td></tr>
+<tr name="133" id="133">
+<td><a id="l133" class='ln'>133</a></td><td>    <a id="133c5" class="tk">Timer</a>(<span class="kw">double</span> <a id="133c18" class="tk">base_rate</a>, <span class="kw">void</span> (<a id="133c35" class="tk">*</a><a id="133c36" class="tk">SigAction</a>)(<span class="kw">int</span>), <a id="133c53" class="tk">ara</a>::<a id="133c58" class="tk">log</a>::<a id="133c63" class="tk">Logger</a> <a id="133c70" class="tk">&amp;</a> <a id="133c72" class="tk">log</a>)<a id="133c76" class="tk">:</a></td></tr>
+<tr name="134" id="134">
+<td><a id="l134" class='ln'>134</a></td><td>        <a id="134c9" class="tk">base_rate</a>(<a id="134c19" class="tk">base_rate</a>),</td></tr>
+<tr name="135" id="135">
+<td><a id="l135" class='ln'>135</a></td><td>        <a id="135c9" class="tk">log</a>(<a id="135c13" class="tk">log</a>)</td></tr>
+<tr name="136" id="136">
+<td><a id="l136" class='ln'>136</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="137" id="137">
+<td><a id="l137" class='ln'>137</a></td><td>        <span class="kw">struct</span> <a id="137c16" class="tk">sigaction</a> <a id="137c26" class="tk">action</a>;</td></tr>
+<tr name="138" id="138">
+<td><a id="l138" class='ln'>138</a></td><td>        <a id="138c9" class="tk">sigemptyset</a>(<a id="138c21" class="tk">&amp;</a><a id="138c22" class="tk">action</a>.<a id="138c29" class="tk">sa_mask</a>);</td></tr>
+<tr name="139" id="139">
+<td><a id="l139" class='ln'>139</a></td><td>        <a id="139c9" class="tk">action</a>.<a id="139c16" class="tk">sa_handler</a> = <a id="139c29" class="tk">SigAction</a>;</td></tr>
+<tr name="140" id="140">
+<td><a id="l140" class='ln'>140</a></td><td>        <a id="140c9" class="tk">action</a>.<a id="140c16" class="tk">sa_flags</a> = 0;</td></tr>
+<tr name="141" id="141">
+<td><a id="l141" class='ln'>141</a></td><td>        <span class="kw">if</span> (<a id="141c13" class="tk">sigaction</a>(<a id="141c23" class="tk">SIGRTMIN</a>, <a id="141c33" class="tk">&amp;</a><a id="141c34" class="tk">action</a>, <a id="141c42" class="tk">NULL</a>) <a id="141c48" class="tk">==</a> <a id="141c51" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="142" id="142">
+<td><a id="l142" class='ln'>142</a></td><td>            <a id="142c13" class="tk">log</a>.<a id="142c17" class="tk">LogError</a>() <a id="142c28" class="tk">&lt;&lt;</a> "Registering signal handler failed: " <a id="142c69" class="tk">&lt;&lt;</a> <a id="142c72" class="tk">std</a>::<a id="142c77" class="tk">strerror</a>(<a id="142c86" class="tk">errno</a>);</td></tr>
+<tr name="143" id="143">
+<td><a id="l143" class='ln'>143</a></td><td>            <a id="143c13" class="tk">std</a>::<a id="143c18" class="tk">exit</a>(<a id="143c23" class="tk">EXIT_FAILURE</a>);</td></tr>
+<tr name="144" id="144">
+<td><a id="l144" class='ln'>144</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="145" id="145">
+<td><a id="l145" class='ln'>145</a></td><td></td></tr>
+<tr name="146" id="146">
+<td><a id="l146" class='ln'>146</a></td><td>        <span class="kw">struct</span> <a id="146c16" class="tk">sigevent</a> <a id="146c25" class="tk">event</a>;</td></tr>
+<tr name="147" id="147">
+<td><a id="l147" class='ln'>147</a></td><td>        <a id="147c9" class="tk">event</a>.<a id="147c15" class="tk">sigev_notify</a> = <a id="147c30" class="tk">SIGEV_SIGNAL</a>;</td></tr>
+<tr name="148" id="148">
+<td><a id="l148" class='ln'>148</a></td><td>        <a id="148c9" class="tk">event</a>.<a id="148c15" class="tk">sigev_signo</a> = <a id="148c29" class="tk">SIGRTMIN</a>;</td></tr>
+<tr name="149" id="149">
+<td><a id="l149" class='ln'>149</a></td><td>        <a id="149c9" class="tk">event</a>.<a id="149c15" class="tk">sigev_value</a>.<a id="149c27" class="tk">sival_ptr</a> = 0;</td></tr>
+<tr name="150" id="150">
+<td><a id="l150" class='ln'>150</a></td><td>        <span class="kw">if</span> (<a id="150c13" class="tk">timer_create</a>(<a id="150c26" class="tk">CLOCK_MONOTONIC</a>, <a id="150c43" class="tk">&amp;</a><a id="150c44" class="tk">event</a>, <a id="150c51" class="tk">&amp;</a><a id="150c52" class="tk">timerid</a>) <a id="150c61" class="tk">==</a> <a id="150c64" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="151" id="151">
+<td><a id="l151" class='ln'>151</a></td><td>            <a id="151c13" class="tk">log</a>.<a id="151c17" class="tk">LogError</a>() <a id="151c28" class="tk">&lt;&lt;</a> "Timer registration failed: " <a id="151c61" class="tk">&lt;&lt;</a> <a id="151c64" class="tk">std</a>::<a id="151c69" class="tk">strerror</a>(<a id="151c78" class="tk">errno</a>);</td></tr>
+<tr name="152" id="152">
+<td><a id="l152" class='ln'>152</a></td><td>            <a id="152c13" class="tk">std</a>::<a id="152c18" class="tk">exit</a>(<a id="152c23" class="tk">EXIT_FAILURE</a>);</td></tr>
+<tr name="153" id="153">
+<td><a id="l153" class='ln'>153</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="154" id="154">
+<td><a id="l154" class='ln'>154</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="155" id="155">
+<td><a id="l155" class='ln'>155</a></td><td></td></tr>
+<tr name="156" id="156">
+<td><a id="l156" class='ln'>156</a></td><td>    <span class="kw">void</span> <a id="156c10" class="tk">start</a>()</td></tr>
+<tr name="157" id="157">
+<td><a id="l157" class='ln'>157</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="158" id="158">
+<td><a id="l158" class='ln'>158</a></td><td>        <span class="kw">static</span> <span class="kw">long</span> <span class="kw">const</span> <a id="158c27" class="tk">sec_to_nsec</a> = 1000000000;</td></tr>
+<tr name="159" id="159">
+<td><a id="l159" class='ln'>159</a></td><td>        <span class="kw">struct</span> <a id="159c16" class="tk">itimerspec</a> <a id="159c27" class="tk">timerspec</a>;</td></tr>
+<tr name="160" id="160">
+<td><a id="l160" class='ln'>160</a></td><td>        <a id="160c9" class="tk">time_t</a> <a id="160c16" class="tk">sec</a> = <span class="kw">static_cast</span><a id="160c33" class="tk">&lt;</a><a id="160c34" class="tk">time_t</a><a id="160c40" class="tk">&gt;</a>(<a id="160c42" class="tk">base_rate</a>);</td></tr>
+<tr name="161" id="161">
+<td><a id="l161" class='ln'>161</a></td><td>        <span class="kw">long</span> <a id="161c14" class="tk">nsec</a> = (<a id="161c22" class="tk">base_rate</a> <a id="161c32" class="tk">-</a> <a id="161c34" class="tk">sec</a>) <a id="161c39" class="tk">*</a> <a id="161c41" class="tk">sec_to_nsec</a>;</td></tr>
+<tr name="162" id="162">
+<td><a id="l162" class='ln'>162</a></td><td>        <a id="162c9" class="tk">timerspec</a>.<a id="162c19" class="tk">it_value</a>.<a id="162c28" class="tk">tv_sec</a> = <a id="162c37" class="tk">sec</a>;</td></tr>
+<tr name="163" id="163">
+<td><a id="l163" class='ln'>163</a></td><td>        <a id="163c9" class="tk">timerspec</a>.<a id="163c19" class="tk">it_value</a>.<a id="163c28" class="tk">tv_nsec</a> = <a id="163c38" class="tk">nsec</a>;</td></tr>
+<tr name="164" id="164">
+<td><a id="l164" class='ln'>164</a></td><td>        <a id="164c9" class="tk">timerspec</a>.<a id="164c19" class="tk">it_interval</a>.<a id="164c31" class="tk">tv_sec</a> = <a id="164c40" class="tk">sec</a>;</td></tr>
+<tr name="165" id="165">
+<td><a id="l165" class='ln'>165</a></td><td>        <a id="165c9" class="tk">timerspec</a>.<a id="165c19" class="tk">it_interval</a>.<a id="165c31" class="tk">tv_nsec</a> = <a id="165c41" class="tk">nsec</a>;</td></tr>
+<tr name="166" id="166">
+<td><a id="l166" class='ln'>166</a></td><td>        <span class="kw">if</span> (<a id="166c13" class="tk">timer_settime</a>(<a id="166c27" class="tk">timerid</a>, 0, <a id="166c39" class="tk">&amp;</a><a id="166c40" class="tk">timerspec</a>, <a id="166c51" class="tk">nullptr</a>) <a id="166c60" class="tk">==</a> <a id="166c63" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="167" id="167">
+<td><a id="l167" class='ln'>167</a></td><td>            <a id="167c13" class="tk">log</a>.<a id="167c17" class="tk">LogError</a>() <a id="167c28" class="tk">&lt;&lt;</a> "Arming the timer failed: " <a id="167c59" class="tk">&lt;&lt;</a> <a id="167c62" class="tk">std</a>::<a id="167c67" class="tk">strerror</a>(<a id="167c76" class="tk">errno</a>);</td></tr>
+<tr name="168" id="168">
+<td><a id="l168" class='ln'>168</a></td><td>            <a id="168c13" class="tk">std</a>::<a id="168c18" class="tk">exit</a>(<a id="168c23" class="tk">EXIT_FAILURE</a>);</td></tr>
+<tr name="169" id="169">
+<td><a id="l169" class='ln'>169</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="170" id="170">
+<td><a id="l170" class='ln'>170</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="171" id="171">
+<td><a id="l171" class='ln'>171</a></td><td></td></tr>
+<tr name="172" id="172">
+<td><a id="l172" class='ln'>172</a></td><td>    <a id="172c5" class="tk">~</a><a id="172c6" class="tk">Timer</a>()</td></tr>
+<tr name="173" id="173">
+<td><a id="l173" class='ln'>173</a></td><td>    <span class="br">{</span></td></tr>
+<tr name="174" id="174">
+<td><a id="l174" class='ln'>174</a></td><td>        <span class="kw">if</span> (<a id="174c13" class="tk">timer_delete</a>(<a id="174c26" class="tk">timerid</a>) <a id="174c35" class="tk">!=</a> 0) <span class="br">{</span></td></tr>
+<tr name="175" id="175">
+<td><a id="l175" class='ln'>175</a></td><td>            <a id="175c13" class="tk">log</a>.<a id="175c17" class="tk">LogError</a>() <a id="175c28" class="tk">&lt;&lt;</a> "Deleting timer failed: " <a id="175c57" class="tk">&lt;&lt;</a> <a id="175c60" class="tk">std</a>::<a id="175c65" class="tk">strerror</a>(<a id="175c74" class="tk">errno</a>);</td></tr>
+<tr name="176" id="176">
+<td><a id="l176" class='ln'>176</a></td><td>        <span class="br">}</span></td></tr>
+<tr name="177" id="177">
+<td><a id="l177" class='ln'>177</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="178" id="178">
+<td><a id="l178" class='ln'>178</a></td><td><span class="br">}</span>;</td></tr>
+<tr name="179" id="179">
+<td><a id="l179" class='ln'>179</a></td><td></td></tr>
+<tr name="180" id="180">
+<td><a id="l180" class='ln'>180</a></td><td><span class="kw">void</span> <a id="180c6" class="tk">block_signals</a>(<a id="180c20" class="tk">ara</a>::<a id="180c25" class="tk">log</a>::<a id="180c30" class="tk">Logger</a> <a id="180c37" class="tk">&amp;</a> <a id="180c39" class="tk">log</a>)</td></tr>
+<tr name="181" id="181">
+<td><a id="l181" class='ln'>181</a></td><td><span class="br">{</span></td></tr>
+<tr name="182" id="182">
+<td><a id="l182" class='ln'>182</a></td><td>    <a id="182c5" class="tk">sigset_t</a> <a id="182c14" class="tk">sigset</a>;</td></tr>
+<tr name="183" id="183">
+<td><a id="l183" class='ln'>183</a></td><td>    <a id="183c5" class="tk">sigemptyset</a>(<a id="183c17" class="tk">&amp;</a><a id="183c18" class="tk">sigset</a>);</td></tr>
+<tr name="184" id="184">
+<td><a id="l184" class='ln'>184</a></td><td>    <a id="184c5" class="tk">sigaddset</a>(<a id="184c15" class="tk">&amp;</a><a id="184c16" class="tk">sigset</a>, <a id="184c24" class="tk">SIGRTMIN</a>);</td></tr>
+<tr name="185" id="185">
+<td><a id="l185" class='ln'>185</a></td><td>    <a id="185c5" class="tk">sigaddset</a>(<a id="185c15" class="tk">&amp;</a><a id="185c16" class="tk">sigset</a>, <a id="185c24" class="tk">SIGTERM</a>);</td></tr>
+<tr name="186" id="186">
+<td><a id="l186" class='ln'>186</a></td><td>    <span class="kw">if</span> (<a id="186c9" class="tk">pthread_sigmask</a>(<a id="186c25" class="tk">SIG_SETMASK</a>, <a id="186c38" class="tk">&amp;</a><a id="186c39" class="tk">sigset</a>, <a id="186c47" class="tk">NULL</a>) <a id="186c53" class="tk">==</a> <a id="186c56" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="187" id="187">
+<td><a id="l187" class='ln'>187</a></td><td>        <a id="187c9" class="tk">log</a>.<a id="187c13" class="tk">LogError</a>() <a id="187c24" class="tk">&lt;&lt;</a> "Blocking signals failed: " <a id="187c55" class="tk">&lt;&lt;</a> <a id="187c58" class="tk">std</a>::<a id="187c63" class="tk">strerror</a>(<a id="187c72" class="tk">errno</a>);</td></tr>
+<tr name="188" id="188">
+<td><a id="l188" class='ln'>188</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="189" id="189">
+<td><a id="l189" class='ln'>189</a></td><td><span class="br">}</span></td></tr>
+<tr name="190" id="190">
+<td><a id="l190" class='ln'>190</a></td><td></td></tr>
+<tr name="191" id="191">
+<td><a id="l191" class='ln'>191</a></td><td><span class="kw">void</span> <a id="191c6" class="tk">unblock_signals</a>(<a id="191c22" class="tk">ara</a>::<a id="191c27" class="tk">log</a>::<a id="191c32" class="tk">Logger</a> <a id="191c39" class="tk">&amp;</a> <a id="191c41" class="tk">log</a>)</td></tr>
+<tr name="192" id="192">
+<td><a id="l192" class='ln'>192</a></td><td><span class="br">{</span></td></tr>
+<tr name="193" id="193">
+<td><a id="l193" class='ln'>193</a></td><td>    <a id="193c5" class="tk">sigset_t</a> <a id="193c14" class="tk">sigset</a>;</td></tr>
+<tr name="194" id="194">
+<td><a id="l194" class='ln'>194</a></td><td>    <a id="194c5" class="tk">sigemptyset</a>(<a id="194c17" class="tk">&amp;</a><a id="194c18" class="tk">sigset</a>);</td></tr>
+<tr name="195" id="195">
+<td><a id="l195" class='ln'>195</a></td><td>    <a id="195c5" class="tk">sigaddset</a>(<a id="195c15" class="tk">&amp;</a><a id="195c16" class="tk">sigset</a>, <a id="195c24" class="tk">SIGRTMIN</a>);</td></tr>
+<tr name="196" id="196">
+<td><a id="l196" class='ln'>196</a></td><td>    <a id="196c5" class="tk">sigaddset</a>(<a id="196c15" class="tk">&amp;</a><a id="196c16" class="tk">sigset</a>, <a id="196c24" class="tk">SIGTERM</a>);</td></tr>
+<tr name="197" id="197">
+<td><a id="l197" class='ln'>197</a></td><td>    <span class="kw">if</span> (<a id="197c9" class="tk">pthread_sigmask</a>(<a id="197c25" class="tk">SIG_UNBLOCK</a>, <a id="197c38" class="tk">&amp;</a><a id="197c39" class="tk">sigset</a>, <a id="197c47" class="tk">NULL</a>) <a id="197c53" class="tk">==</a> <a id="197c56" class="tk">-</a>1) <span class="br">{</span></td></tr>
+<tr name="198" id="198">
+<td><a id="l198" class='ln'>198</a></td><td>        <a id="198c9" class="tk">log</a>.<a id="198c13" class="tk">LogError</a>() <a id="198c24" class="tk">&lt;&lt;</a> "Blocking signals failed: " <a id="198c55" class="tk">&lt;&lt;</a> <a id="198c58" class="tk">std</a>::<a id="198c63" class="tk">strerror</a>(<a id="198c72" class="tk">errno</a>);</td></tr>
+<tr name="199" id="199">
+<td><a id="l199" class='ln'>199</a></td><td>    <span class="br">}</span></td></tr>
+<tr name="200" id="200">
+<td><a id="l200" class='ln'>200</a></td><td><span class="br">}</span></td></tr>
+<tr name="201" id="201">
+<td><a id="l201" class='ln'>201</a></td><td></td></tr>
+<tr name="202" id="202">
+<td><a id="l202" class='ln'>202</a></td><td><span class="pp">#endif</span> <span class="ct">// _MAIN_UTILS_HPP_</span></td></tr>
+<tr name="203" id="203">
+<td><a id="l203" class='ln'>203</a></td><td></td></tr>
+</table>
+</pre>
+</body>
+</html>

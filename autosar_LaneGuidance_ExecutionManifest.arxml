@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Auto generated XML Component Description for model autosar_LaneGuidance
+Model version                : 2.0
+Simulink Coder version       : Simulink Coder 9.4 (R2020b) 29-Jul-2020
+XML source code generated on : Mon Oct 05 20:22:32 2020
+Model Checksum               : 459014785 4019853902 2435345655 3361303438
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00047.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_Executable</SHORT-NAME>
+            <ELEMENTS>
+                <EXECUTABLE UUID="17cd24ab-c987-524c-6bf8-9d07f6c9056b">
+                    <SHORT-NAME>autosar_LaneGuidance</SHORT-NAME>
+                    <BUILD-TYPE>BUILD-TYPE-DEBUG</BUILD-TYPE>
+                    <ROOT-SW-COMPONENT-PROTOTYPE UUID="a76ce4bb-5d8e-5375-ac5d-fbaad5c85fdd">
+                        <SHORT-NAME>autosar_LaneGuidance_RootSwComponentPrototype</SHORT-NAME>
+                        <APPLICATION-TYPE-TREF DEST="APPLICATION-SW-COMPONENT-TYPE">/LaneGuidance_pkg/LaneGuidance_swc/LaneGuidance</APPLICATION-TYPE-TREF>
+                    </ROOT-SW-COMPONENT-PROTOTYPE>
+                </EXECUTABLE>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_ProcessToMachineMappingSet</SHORT-NAME>
+            <ELEMENTS>
+                <PROCESS-TO-MACHINE-MAPPING-SET UUID="ce50c318-0e52-59e4-6080-8956ca58838c">
+                    <SHORT-NAME>ProcessToMachineMappingSet</SHORT-NAME>
+                    <PROCESS-TO-MACHINE-MAPPINGS>
+                        <PROCESS-TO-MACHINE-MAPPING UUID="d9f071c3-fc78-54db-ebeb-74d605e0db4a">
+                            <SHORT-NAME>DefaultMapping</SHORT-NAME>
+                            <MACHINE-REF DEST="MACHINE">/Machines/Host</MACHINE-REF>
+                            <PROCESS-REF DEST="PROCESS">/LaneGuidance_Processes/DefaultInstance</PROCESS-REF>
+                        </PROCESS-TO-MACHINE-MAPPING>
+                    </PROCESS-TO-MACHINE-MAPPINGS>
+                </PROCESS-TO-MACHINE-MAPPING-SET>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_Processes</SHORT-NAME>
+            <ELEMENTS>
+                <PROCESS UUID="e872fbe5-6e99-53c0-bfe5-2f3e4900e71a">
+                    <SHORT-NAME>DefaultInstance</SHORT-NAME>
+                    <EXECUTABLE-REF DEST="EXECUTABLE">/LaneGuidance_Executable/autosar_LaneGuidance</EXECUTABLE-REF>
+                    <LOG-TRACE-DEFAULT-LOG-LEVEL>WARN</LOG-TRACE-DEFAULT-LOG-LEVEL>
+                    <LOG-TRACE-LOG-MODE>CONSOLE</LOG-TRACE-LOG-MODE>
+                    <LOG-TRACE-PROCESS-DESC>Log messages for adaptive application autosar_LaneGuidance</LOG-TRACE-PROCESS-DESC>
+                    <LOG-TRACE-PROCESS-ID>8147</LOG-TRACE-PROCESS-ID>
+                    <STATE-DEPENDENT-STARTUP-CONFIGS>
+                        <STATE-DEPENDENT-STARTUP-CONFIG>
+                            <FUNCTION-GROUP-STATE-IREFS>
+                                <FUNCTION-GROUP-STATE-IREF>
+                                    <CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/Machines/Host/Host_ModeDeclarationGroupElement</CONTEXT-MODE-DECLARATION-GROUP-PROTOTYPE-REF>
+                                    <TARGET-MODE-DECLARATION-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Running</TARGET-MODE-DECLARATION-REF>
+                                </FUNCTION-GROUP-STATE-IREF>
+                            </FUNCTION-GROUP-STATE-IREFS>
+                            <RESOURCE-GROUP-REF DEST="RESOURCE-GROUP">/Machines/Host/HostOsInstantiation/DefaultResourceGroup</RESOURCE-GROUP-REF>
+                            <STARTUP-CONFIG-REF DEST="STARTUP-CONFIG">/LaneGuidance_StartupConfigSets/DefaultStartupConfigSet/StartupConfigRR</STARTUP-CONFIG-REF>
+                        </STATE-DEPENDENT-STARTUP-CONFIG>
+                    </STATE-DEPENDENT-STARTUP-CONFIGS>
+                </PROCESS>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+            <SHORT-NAME>LaneGuidance_StartupConfigSets</SHORT-NAME>
+            <ELEMENTS>
+                <STARTUP-CONFIG-SET UUID="1aea6160-37bd-55c8-c161-0f65bba08f03">
+                    <SHORT-NAME>DefaultStartupConfigSet</SHORT-NAME>
+                    <STARTUP-CONFIGS>
+                        <STARTUP-CONFIG UUID="d1a6032e-b459-5931-ef2e-cb129911978c">
+                            <SHORT-NAME>StartupConfigRR</SHORT-NAME>
+                            <SCHEDULING-POLICY>SCHEDULING-POLICY-ROUND-ROBIN</SCHEDULING-POLICY>
+                            <SCHEDULING-PRIORITY>32</SCHEDULING-PRIORITY>
+                        </STARTUP-CONFIG>
+                        <STARTUP-CONFIG UUID="4aca3956-1caf-555d-dde8-37db0d267695">
+                            <SHORT-NAME>StartupConfigFifo</SHORT-NAME>
+                            <SCHEDULING-POLICY>SCHEDULING-POLICY-FIFO</SCHEDULING-POLICY>
+                            <SCHEDULING-PRIORITY>32</SCHEDULING-PRIORITY>
+                        </STARTUP-CONFIG>
+                        <STARTUP-CONFIG UUID="709f0ed2-676b-5c37-3e94-26c43b56f69e">
+                            <SHORT-NAME>StartupConfigOther</SHORT-NAME>
+                            <SCHEDULING-POLICY>SCHEDULING-POLICY-OTHER</SCHEDULING-POLICY>
+                            <SCHEDULING-PRIORITY>32</SCHEDULING-PRIORITY>
+                        </STARTUP-CONFIG>
+                    </STARTUP-CONFIGS>
+                </STARTUP-CONFIG-SET>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

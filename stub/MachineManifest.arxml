@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Auto generated XML Component Description for model autosar_LaneGuidance
+Model version                : 2.0
+Simulink Coder version       : Simulink Coder 9.4 (R2020b) 29-Jul-2020
+XML source code generated on : Mon Oct 05 20:22:32 2020
+Model Checksum               : 459014785 4019853902 2435345655 3361303438
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00047.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE>
+            <SHORT-NAME>MachineStates</SHORT-NAME>
+            <ELEMENTS>
+                <MODE-DECLARATION-GROUP>
+                    <SHORT-NAME>DefaultMachineStates</SHORT-NAME>
+                    <INITIAL-MODE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Running</INITIAL-MODE-REF>
+                    <MODE-DECLARATIONS>
+                        <MODE-DECLARATION UUID="6d8f99bb-daa6-55a4-f2a7-6f8dedbb4a83">
+                            <SHORT-NAME>Off</SHORT-NAME>
+                            <VALUE>1</VALUE>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION UUID="171528c2-87de-5f8b-f743-339927852059">
+                            <SHORT-NAME>Startup</SHORT-NAME>
+                            <VALUE>2</VALUE>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION UUID="84756cc4-4ce1-5820-1d08-852388455119">
+                            <SHORT-NAME>Running</SHORT-NAME>
+                            <VALUE>3</VALUE>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION UUID="af8b3b0a-f34d-59bf-050d-0401f0c8ef41">
+                            <SHORT-NAME>Idle</SHORT-NAME>
+                            <VALUE>4</VALUE>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION UUID="d25a5e17-632b-5057-481a-8ae19badd124">
+                            <SHORT-NAME>Shutdown</SHORT-NAME>
+                            <VALUE>5</VALUE>
+                        </MODE-DECLARATION>
+                        <MODE-DECLARATION UUID="5578f947-6ea5-5705-fa05-b0d13e920ab5">
+                            <SHORT-NAME>Restart</SHORT-NAME>
+                            <VALUE>6</VALUE>
+                        </MODE-DECLARATION>
+                    </MODE-DECLARATIONS>
+                </MODE-DECLARATION-GROUP>
+            </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE>
+            <SHORT-NAME>Machines</SHORT-NAME>
+            <ELEMENTS>
+                <MACHINE UUID="f47c7c4e-7351-5672-58d3-ae97bfb9c6a9">
+                    <SHORT-NAME>Host</SHORT-NAME>
+                    <DEFAULT-APPLICATION-TIMEOUT>
+                        <ENTER-TIMEOUT-VALUE>60</ENTER-TIMEOUT-VALUE>
+                        <EXIT-TIMEOUT-VALUE>60</EXIT-TIMEOUT-VALUE>
+                    </DEFAULT-APPLICATION-TIMEOUT>
+                    <FUNCTION-GROUPS>
+                        <MODE-DECLARATION-GROUP-PROTOTYPE UUID="d89f1aa4-d0e7-51c8-5660-dc8098f0a8b4">
+                            <SHORT-NAME>Host_ModeDeclarationGroupElement</SHORT-NAME>
+                            <SW-CALIBRATION-ACCESS>READ-ONLY</SW-CALIBRATION-ACCESS>
+                            <TYPE-TREF DEST="MODE-DECLARATION-GROUP">/MachineStates/DefaultMachineStates</TYPE-TREF>
+                        </MODE-DECLARATION-GROUP-PROTOTYPE>
+                    </FUNCTION-GROUPS>
+                    <MODULE-INSTANTIATIONS>
+                        <OS-MODULE-INSTANTIATION UUID="d453287c-54d2-5032-431e-ff261b28d8e2">
+                            <SHORT-NAME>HostOsInstantiation</SHORT-NAME>
+                            <RESOURCE-GROUPS>
+                                <RESOURCE-GROUP UUID="dcefb2fb-c728-5340-a038-2bf243b5b294">
+                                    <SHORT-NAME>DefaultResourceGroup</SHORT-NAME>
+                                    <CPU-USAGE>100</CPU-USAGE>
+                                    <MEM-USAGE>4096000000</MEM-USAGE>
+                                </RESOURCE-GROUP>
+                            </RESOURCE-GROUPS>
+                        </OS-MODULE-INSTANTIATION>
+                    </MODULE-INSTANTIATIONS>
+                    <PER-STATE-TIMEOUTS>
+                        <PER-STATE-TIMEOUT>
+                            <STATE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Off</STATE-REF>
+                            <TIMEOUT>
+                                <ENTER-TIMEOUT-VALUE>60</ENTER-TIMEOUT-VALUE>
+                                <EXIT-TIMEOUT-VALUE>60</EXIT-TIMEOUT-VALUE>
+                            </TIMEOUT>
+                        </PER-STATE-TIMEOUT>
+                        <PER-STATE-TIMEOUT>
+                            <STATE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Startup</STATE-REF>
+                            <TIMEOUT>
+                                <ENTER-TIMEOUT-VALUE>60</ENTER-TIMEOUT-VALUE>
+                                <EXIT-TIMEOUT-VALUE>60</EXIT-TIMEOUT-VALUE>
+                            </TIMEOUT>
+                        </PER-STATE-TIMEOUT>
+                        <PER-STATE-TIMEOUT>
+                            <STATE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Running</STATE-REF>
+                            <TIMEOUT>
+                                <ENTER-TIMEOUT-VALUE>60</ENTER-TIMEOUT-VALUE>
+                                <EXIT-TIMEOUT-VALUE>60</EXIT-TIMEOUT-VALUE>
+                            </TIMEOUT>
+                        </PER-STATE-TIMEOUT>
+                        <PER-STATE-TIMEOUT>
+                            <STATE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Idle</STATE-REF>
+                            <TIMEOUT>
+                                <ENTER-TIMEOUT-VALUE>60</ENTER-TIMEOUT-VALUE>
+                                <EXIT-TIMEOUT-VALUE>5</EXIT-TIMEOUT-VALUE>
+                            </TIMEOUT>
+                        </PER-STATE-TIMEOUT>
+                        <PER-STATE-TIMEOUT>
+                            <STATE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Shutdown</STATE-REF>
+                            <TIMEOUT>
+                                <ENTER-TIMEOUT-VALUE>60</ENTER-TIMEOUT-VALUE>
+                                <EXIT-TIMEOUT-VALUE>60</EXIT-TIMEOUT-VALUE>
+                            </TIMEOUT>
+                        </PER-STATE-TIMEOUT>
+                        <PER-STATE-TIMEOUT>
+                            <STATE-REF DEST="MODE-DECLARATION">/MachineStates/DefaultMachineStates/Restart</STATE-REF>
+                            <TIMEOUT>
+                                <ENTER-TIMEOUT-VALUE>120</ENTER-TIMEOUT-VALUE>
+                                <EXIT-TIMEOUT-VALUE>60</EXIT-TIMEOUT-VALUE>
+                            </TIMEOUT>
+                        </PER-STATE-TIMEOUT>
+                    </PER-STATE-TIMEOUTS>
+                </MACHINE>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>
